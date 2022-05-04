@@ -9,7 +9,6 @@ export class SearchAmazon {
   url: string;
   price: number;
   data: {title: string, url: string, date: string, price: number}[];
-  sortedData: {title: string, url: string, date: string, price: number}[];
 
   constructor(page: Page) {
     this.page = page;
@@ -29,21 +28,20 @@ export class SearchAmazon {
   }
 
   public async listItems() {
-
     const listings = await this.page.evaluate(() => {
       const items: NodeListOf<Element> = document.querySelectorAll('.s-card-container');
       this.data = [];
       items.forEach((item) => {
         if (item.querySelector('.a-offscreen') !== null) {
-          let date = new Date().toLocaleDateString();
-          let title = item.querySelector('h2').innerText;
-          let url = item.querySelector('a').getAttribute('href');
-          let price = Number(item.querySelector('.a-offscreen').innerHTML.substring(1).replace(/,/g,''));
+          let date: string = new Date().toLocaleDateString();
+          let title: string = item.querySelector('h2').innerText;
+          let url: string = item.querySelector('a').getAttribute('href');
+          let price: number = Number(item.querySelector('.a-offscreen').innerHTML.substring(1).replace(/,/g,''));
           this.data.push({title, url, price, date});
         };
       });
-      this.sortedData = this.data.sort((a,b) => a.price-b.price);
-      return this.sortedData;
+      this.data.sort((a, b) => a.price-b.price);
+      return this.data;
     });
     return listings;
   };
