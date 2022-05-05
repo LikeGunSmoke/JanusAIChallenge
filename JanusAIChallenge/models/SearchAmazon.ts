@@ -4,11 +4,11 @@ export class SearchAmazon {
 
   page: Page;
   searchTermInput: Locator;
-  date: string;
-  title: string;
-  url: string;
-  price: number;
-  data: {title: string, url: string, date: string, price: number}[];
+  date!: string;
+  title!: string;
+  url!: string;
+  price!: number;
+  data!: {title: string, url: string, date: string, price: number}[];
 
   constructor(page: Page) {
     this.page = page;
@@ -32,13 +32,11 @@ export class SearchAmazon {
       const items: NodeListOf<Element> = document.querySelectorAll('.s-card-container');
       this.data = [];
       items.forEach((item) => {
-        if (item.querySelector('.a-offscreen') !== null) {
-          let date: string = new Date().toLocaleDateString();
-          let title: string = item.querySelector('h2').innerText;
-          let url: string = item.querySelector('a').getAttribute('href');
-          let price: number = Number(item.querySelector('.a-offscreen').innerHTML.substring(1).replace(/,/g,''));
-          this.data.push({title, url, price, date});
-        };
+        let price: number = Number(item.querySelector('.a-offscreen')?.innerHTML.substring(1).replace(/,/g,''));
+        let date: string = new Date().toLocaleDateString();
+        let title: string = item.querySelector('h2')?.innerText;
+        let url: string = item.querySelector('a')?.getAttribute('href');
+        this.data.push({title, url, price, date});
       });
       this.data.sort((a, b) => a.price-b.price);
       return this.data;

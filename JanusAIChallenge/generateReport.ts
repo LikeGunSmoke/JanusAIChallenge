@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-const generateReport = (data: {title: string, url: string, date: string, price: number}[], testName?: string) => {
+const generateReport = (data: {title: string, url: string, date: string, price: number}[], testName: string = "NewTest") => {
 
   let csv: string = "";
   for (let i = 0; i < 3; i++) {
