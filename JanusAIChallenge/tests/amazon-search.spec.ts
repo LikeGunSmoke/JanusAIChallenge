@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { SearchAmazon } from '../models/SearchAmazon';
 import generateReport  from '../generateReport';
+import amazonSearchTerms from '../search_terms/amazon'
 
 /*
 
@@ -16,22 +17,13 @@ It should find the 3 best prices (shown on the first page only) for each of the 
 
 test('Find best price', async ({ page }) => {
 
-  const nvidia3060_searchPage = new SearchAmazon(page);
-  await nvidia3060_searchPage.navigate();
-  await nvidia3060_searchPage.search('nvidia 3060');
-  const nvidia3060_listings = await nvidia3060_searchPage.listItems();
-  generateReport(nvidia3060_listings, 'nvidia3060');
-
-  const nvidia3070_searchPage = new SearchAmazon(page);
-  await nvidia3070_searchPage.navigate();
-  await nvidia3070_searchPage.search('nvidia 3070');
-  const nvidia3070_listings = await nvidia3070_searchPage.listItems();
-  generateReport(nvidia3070_listings, 'nvidia3070');
-
-  const nvidia3080_searchPage = new SearchAmazon(page);
-  await nvidia3080_searchPage.navigate();
-  await nvidia3080_searchPage.search('nvidia 3080');
-  const nvidia3080_listings = await nvidia3080_searchPage.listItems();
-  generateReport(nvidia3080_listings, 'nvidia3080');
+  const nvidiaBest = [];
+  for (const term of amazonSearchTerms) {
+    const nvidia = new SearchAmazon(page);
+    await nvidia.navigate(term);
+    const listings = await nvidia.listItems();
+    nvidiaBest.push(listings)
+  };
+  generateReport(nvidiaBest.flat(), 'nvidia');
 
 });

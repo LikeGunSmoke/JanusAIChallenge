@@ -1,33 +1,25 @@
-import { Locator, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 export class SearchAmazon {
 
   page: Page;
-  searchTermInput: Locator;
   date!: string;
   title!: string;
   url!: string;
   price!: number;
   data!: {title: string, url: string, date: string, price: number}[];
+  bestPrices!: {title: string, url: string, date: string, price: number}[];
 
   constructor(page: Page) {
     this.page = page;
-    this.searchTermInput = page.locator('[aria-label="Search"]')
   }
 
-  public async navigate() {
-    await this.page.goto('https://amazon.com/');
-  }
-
-  public async search(text: string) {
-    await this.searchTermInput.fill(text);
-    await Promise.all([
-      this.page.waitForNavigation(),
-      this.page.locator('[aria-label="Search"]').press('Enter')
-    ]);
+  public async navigate(text: string) {
+    await this.page.goto(`https://amazon.com/s?k=${text}`);
   }
 
   public async listItems() {
+    this.bestPrices = []
     const listings = await this.page.evaluate(() => {
       const items: NodeListOf<Element> = document.querySelectorAll('.s-card-container');
       this.data = [];
@@ -41,7 +33,10 @@ export class SearchAmazon {
       this.data.sort((a, b) => a.price-b.price);
       return this.data;
     });
-    return listings;
+    for (let i = 0; i < 3; i++) {
+      this.bestPrices.push(listings[i]);
+    };
+    return this.bestPrices;
   };
 
 };

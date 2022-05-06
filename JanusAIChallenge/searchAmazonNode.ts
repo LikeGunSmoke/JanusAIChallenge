@@ -8,8 +8,8 @@ const searchAmazonNode = (() => {
     const browser = await chromium.launch();
     const page = await browser.newPage();
     const nvidia3060_searchPage = new SearchAmazon(page);
-    await nvidia3060_searchPage.navigate();
-    await nvidia3060_searchPage.search('nvidia 3060');
+    // await nvidia3060_searchPage.navigate();
+    // await nvidia3060_searchPage.search('nvidia 3060');
     const nvidia3060_listings = await nvidia3060_searchPage.listItems();
     generateReport(nvidia3060_listings, 'nvidia3060');
   };
