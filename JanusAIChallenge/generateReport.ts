@@ -1,14 +1,20 @@
 import * as fs from 'fs';
 
-const generateReport = (data: {title: string, url: string, date: string, price: number}[], testName: string = "NewTest") => {
+/*
+
+baseURL: if hrefs are relative pass in a base url ie: https://amazon.com/ for complete links, otherwise pass in an empty string
+
+*/
+
+const generateReport = (baseURL: string, data: {title: string, url: string, date: string, price: number}[], testName: string = "NewTest") => {
 
   let csv: string = "";
   for (let i = 0; i < data.length; i++) {
     let currentItem = data[i];
     if (i === data.length - 1) {
-      csv += `"${currentItem.title}", "https://amazon.com/${currentItem.url}", "${currentItem.date}"`
+      csv += `"${currentItem.title}", "${baseURL}${currentItem.url}", "${currentItem.date}"`
     } else {
-      csv += `"${currentItem.title}", "https://amazon.com/${currentItem.url}", "${currentItem.date}"` + '\n'
+      csv += `"${currentItem.title}", "${baseURL}${currentItem.url}", "${currentItem.date}"` + '\n'
     }
   };
 

@@ -1,7 +1,9 @@
 import { test } from '@playwright/test';
 import { SearchAmazon } from '../models/SearchAmazon';
+import { SearchEbay } from '../models/SearchEbay';
 import generateReport  from '../generateReport';
-import amazonSearchTerms from '../search_terms/amazon'
+import amazonSearchTerms from '../search_terms/amazon';
+import ebaySearchTerms from '../search_terms/ebay';
 
 /*
 
@@ -24,6 +26,15 @@ test('Find best price', async ({ page }) => {
     const listings = await nvidia.listItems();
     nvidiaBest.push(listings)
   };
-  generateReport(nvidiaBest.flat(), 'nvidia');
+  generateReport('https://amazon.com', nvidiaBest.flat(), 'nvidia');
+
+  const ebayBest = [];
+  for (const term of ebaySearchTerms) {
+    const ebay = new SearchEbay(page);
+    await ebay.navigate(term);
+    const listings = await ebay.listItems();
+    ebayBest.push(listings)
+  };
+  generateReport("", ebayBest.flat(), 'ebay');
 
 });
