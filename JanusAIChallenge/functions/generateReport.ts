@@ -1,11 +1,5 @@
 import * as fs from 'fs';
 
-/*
-
-baseURL: if hrefs are relative pass in a base url ie: https://amazon.com/ for complete links, otherwise pass in an empty string
-
-*/
-
 const generateReport = (baseURL: string, data: {title: string, url: string, date: string, price: number}[], testName: string = "NewTest") => {
 
   let csv: string = "";
@@ -18,7 +12,7 @@ const generateReport = (baseURL: string, data: {title: string, url: string, date
     }
   };
 
-  fs.writeFile(`${testName}_BestPrice.csv`, csv, 'utf8', (err) => {
+  fs.writeFile(`${testName}_LowestPrices.csv`, csv, 'utf8', (err) => {
     if (err) {
       console.error(err);
     } else {
