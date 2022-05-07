@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-export class ScrapeBestPrice {
+export class ScrapeLowestPrice {
 
   page: Page;
   date!: string;
@@ -18,7 +18,7 @@ export class ScrapeBestPrice {
     await this.page.goto(text);
   }
 
-  public async listItems(selectors: {items: string, title: string, url: string, price: string}, resultsPerListing: number = 3) {
+  public async listItems(selectors: {items: string, title: string, url: string, price: string}, resultsPerListing: number) {
     this.lowestPrices = []
     const listings = await this.page.evaluate((selectors) => {
       const items: NodeListOf<Element> = document.querySelectorAll(selectors.items);

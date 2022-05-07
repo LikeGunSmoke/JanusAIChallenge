@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { ScrapeBestPrice } from '../models/ScrapeBestPrice';
+import { ScrapeLowestPrice } from '../models/ScrapeLowestPrice';
 import generateReport  from './generateReport';
 import { SiteInterface } from '../interfaces/SiteInterface';
 
@@ -7,7 +7,7 @@ const getLowestPrice = async (page: Page, site: SiteInterface, testName: string 
 
   let lowestPrice = [];
   for (const term of site.terms) {
-    const test = new ScrapeBestPrice(page);
+    const test = new ScrapeLowestPrice(page);
     await test.navigate(site.navigate(term));
     const listings = await test.listItems(site.selectors, resultsPerListing);
     lowestPrice.push(listings);
