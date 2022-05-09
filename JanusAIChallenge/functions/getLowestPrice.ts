@@ -3,13 +3,13 @@ import { ScrapeLowestPrice } from '../models/ScrapeLowestPrice';
 import generateReport  from './generateReport';
 import { SiteInterface } from '../interfaces/SiteInterface';
 
-const getLowestPrice = async (page: Page, site: SiteInterface, testName: string = 'NewTest', resultsPerListing: number = 3) => {
+const getLowestPrice = async (page: Page, site: SiteInterface, testName: string = 'NewTest', resultsPerTerm: number = 3) => {
 
   let lowestPrice = [];
   for (const term of site.terms) {
     const test = new ScrapeLowestPrice(page);
     await test.navigate(site.navigate(term));
-    const listings = await test.listItems(site.selectors, resultsPerListing);
+    const listings = await test.listItems(site.selectors, resultsPerTerm);
     lowestPrice.push(listings);
   };
   lowestPrice = lowestPrice.flat(2);
